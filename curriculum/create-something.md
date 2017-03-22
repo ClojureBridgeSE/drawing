@@ -94,11 +94,7 @@ Now, `practice.clj` looks like this:
 (defn draw [])
 
 (q/defsketch practice
-  :title "Clara's Quil practice"
-  :size [500 500]
-  :setup setup
-  :draw draw
-  :features [:keep-on-top])
+  :???)
 ```
 
 ### step 1-4: Download and put snowflake and background images
@@ -149,7 +145,7 @@ At this moment, `practice.clj` looks like this:
 ```clojure
 (ns drawing.practice
   (:require [quil.core :as q]
-            [quil.middleware :as m]))  ;; this line is added in step 1-5
+            :???))  ;; this line is added in step 1-5
 
 (defn setup [])
 
@@ -161,7 +157,7 @@ At this moment, `practice.clj` looks like this:
   :setup setup
   :draw draw
   :features [:keep-on-top]
-  :middleware [m/fun-mode])             ;; this line is added in step 1-5
+  :???)             ;; this line is added in step 1-5
 ```
 
 ### step 1-6: Load snowflake and background images
@@ -186,15 +182,12 @@ At this moment, `practice.clj` looks like this:
 
 (defn setup []
   ;; these two lines, a map (data structure) is added in step 1-6
-  {:flake (q/load-image "images/white_flake.png")
-   :background (q/load-image "images/blue_background.png")}
+  {:???}
   )
 
 (defn draw [state]
-  ;; q/background-image and q/image functions are added in step 1-6
-  (q/background-image (:background state))
-  (q/image (:flake state) 200 10)
-  )
+  ;; new code from step 1-6
+  :???)
 
 (q/defsketch practice
   :title "Clara's Quil practice"
@@ -219,7 +212,7 @@ Clojure has a nice feature called,
 Using the destructuring in a function argument, we can write `draw` function like this:
 
 ```clojure
-(defn draw [{flake :flake background :background}]
+(defn draw [:???]
   (q/background-image background)
   (q/image flake 200 10))
 ```
@@ -279,7 +272,7 @@ To update `y` parameter:
     ```clojure
     {:flake (q/load-image "images/white_flake.png")
      :background (q/load-image "images/blue_background.png")
-     :y-param 10}
+     :???}
     ```
 
 -  Add a new function `update` which will increment the `y` parameter by one
@@ -287,7 +280,7 @@ To update `y` parameter:
     ```clojure
     (defn update [state]
       ;; updating y paraemter by one
-      (update-in state [:y-param] inc))
+      :???)
     ```
 
 -  Add the `update` function in the `q/defsketch` form
@@ -297,7 +290,7 @@ To update `y` parameter:
       :title "Clara's Quil practice"
       :size [500 500]
       :setup setup
-      :update update
+      :???
       :draw draw
       :features [:keep-on-top]
       :middleware [m/fun-mode])
@@ -316,7 +309,7 @@ Clara changed the `draw` function so that `q/image` could have updated
 (defn draw [state]
   ;; drawing blue background and a snowflake on it
   (q/background-image (:background state))
-  (q/image (:flake state) 200 (:y-param state)))
+  (q/image (:flake state) 200 :???))
 ```
 
 She added one more function, `(q/smooth)`, to `setup` since this would
@@ -332,7 +325,7 @@ At this point, `practice.clj` looks like this:
             [quil.middleware :as m]))
 
 (defn setup []
-  (q/smooth)                                      ;; added in step 2-2
+  :???                                      ;; added in step 2-2
   {:flake (q/load-image "images/white_flake.png")
    :background (q/load-image "images/blue_background.png")
    :y-param 10}                                   ;; added in step 2-1
@@ -384,10 +377,10 @@ well like this:
 
 ```clojure
 (defn update [state]
-  (if (>= (:y-param state) (q/height)) ;; y-param is greater than or equal to image height?
-    (assoc state :y-param 0)           ;; true - get it back to the 0 (top)
-    (update-in state [:y-param] inc)   ;; false - update y paraemter by one
-    ))
+  ;; IF y-param is greater than or equal to image height
+  ;; THEN get it back to the 0 (top)
+  ;; ELSE update y paraemter by one
+  )
 ```
 
 So, she used `if` to make the snowflake go back to the top in the
@@ -465,14 +458,13 @@ Here's what she did to add more snowflakes:
 with `def`.
 
     ```clojure
-    (def x-params [10 200 390]) ;; x parameters for three snowflakes
+    (def x-params :???) ;; x parameters for three snowflakes
     ```
 
 2. Draw snowflakes as many times as the number of `x`-params using `doseq`.
 
     ```clojure
-    (doseq [x x-params]
-      (q/image (:flake state) x (:y-param state)))
+    (doseq :???)
     ```
 
 * See, [doseq](http://clojurebridge.github.io/curriculum/outline/sequences.html#/3)
@@ -546,7 +538,7 @@ single value to a vector of 3 maps. Also, the keyword was changed from
 ```clojure
 {:flake (q/load-image "images/white_flake.png")
  :background (q/load-image "images/blue_background.png")
- :y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}]}
+ :y-params :???}
 ```
 
 It was a nice data structure, actually maps in a vector in a map
@@ -576,11 +568,9 @@ To accomplish this map update, Clara added `update-y` function:
 ```clojure
 (defn update-y
   [m]
-  (let [y (:y m)
-        speed (:speed m)]
-    (if (>= y (q/height))           ;; y is greater than or equal to image height?
-      (assoc m :y 0)                ;; true - get it back to the 0 (top)
-      (update-in m [:y] + speed)))) ;; false - add y value and speed
+  ;; IF y is greater than or equal to image height?
+  ;; THEN get it back to the 0 (top)
+  ;; ELSE add y value and speed
 ```
 
 #### [bonus] destructuring
@@ -590,7 +580,7 @@ this:
 
 ```clojure
 (defn update-y
-  [{y :y speed :speed :as m}]
+  [:???]
   (if (>= y (q/height))
     (assoc m :y 0)
     (update-in m [:y] + speed)))
@@ -616,19 +606,15 @@ For example:
 
 > Clojure has a `map` function and `map` data structure.
 > Be careful, this is confusing.
-> In Python, function is a `map`, data structure is dictionary.
-> In Ruby, function is a `map` or `collect`, data structure is hash.
 
 She tested the function on the insta-REPL:
 
 ```clojure
 (defn update-test
-  [m]
-  (let [y (:y m)
-        speed (:speed m)]
-    (if (>= y 500)
-      (assoc m :y 0)
-      (update-in m [:y] + speed))))
+  [{:keys [y speed]}]
+  (if (>= y 500)
+    (assoc m :y 0)
+    (update-in m [:y] + speed)))
 
 (def y-params [{:y 10 :speed 1} {:y 150 :speed 4} {:y 50 :speed 2}])
 
@@ -644,7 +630,7 @@ Her `update` function became like this:
 ```clojure
 (defn update [state]
   (let [y-params (:y-params state)]
-    (assoc state :y-params (map update-y y-params))))
+    (assoc state :y-params :???)))
 ```
 
 
@@ -662,8 +648,7 @@ the code to draw 3 snowflakes as shown below:
 
 ```clojure
 (let [y-params (:y-params state)]
-    (dotimes [n 3]
-      (q/image (:flake state) (nth x-params n) (:y (nth y-params n)))))
+    (dotimes :???))
 ```
 
 ### `practice.clj` in step 5
@@ -750,8 +735,7 @@ name was changed from `:y-params` to `:params`.
 
 ```clojure
 (defn update [state]
-  (let [params (:params state)]
-    (assoc state :params (map update-y params))))
+  :???)
 ```
 
 The `draw` function would have a bigger change since the way to
@@ -772,8 +756,7 @@ Using `let`, her `dotimes` form turned to:
 ```clojure
 (let [params (:params state)]
   (dotimes [n 3]
-    (let [param (nth params n)]
-      (q/image (:flake state) (:x param) (:y param)))))
+    (let :???)))
 ```
 
 The last line got much cleaner!
@@ -909,7 +892,7 @@ the `swing` is 3, the curve becomes the right image.
 
 ![swing is 1](images/1-sin-x.png)  ![swing is 3](images/3-sin-x.png)
 
-The parameter `b` adjusts distances between peeks. If the value is
+The parameter `b` adjusts distances between peaks. If the value is
 small, the snowflake goes left and right busily. On the other hand, if
 the value is big, the snowflakes moves loosely. Thinking of the size
 of window, 50 would be a good number for `b`.
@@ -930,14 +913,11 @@ like this:
 
 ```clojure
 (defn update-x
-  [m]
-  (let [x (:x m)
-        swing (:swing m)
-        y (:y m)]
-    (cond
-     (< x 0) (assoc m :x (q/width))                                  ;; too left
-     (< x (q/width)) (update-in m [:x] + (* swing (q/sin (/ y 50)))) ;; within frame
-     :else (assoc m :x 0))))                                         ;; too right
+  [{:keys [x y swing]}]
+  (cond
+   (< x 0) :???         ;; too left
+   (< x (q/width)) :??? ;; within frame
+   :else :???))         ;; too right
 ```
 
 In this function, she couldn't use `if` anymore since `if` takes only one
@@ -957,7 +937,7 @@ first to last one by one. The `update` function turned to this:
 
 ```clojure
 (defn update [state]
-  (let [params  (:params state)
+  (let [params (:params state)
         params (map update-y params)
         params (map update-x params)]
     (assoc state :params params)))
@@ -972,6 +952,20 @@ comes to the body of `let` function, in other words, the line of
 
 These were all to swing the snowflakes. She could use `draw` function
 as it was.
+
+#### [bonus] threading
+
+Clara didn't like the way she had to keep repeating `params` in her let binding.
+She remembered reading about something called the "thread-last macro":
+[->>](https://clojuredocs.org/clojure.core/-%3E%3E)
+
+She was able to refactor her update function using the thread-last macro:
+
+```clojure
+(defn update [{:keys [params]}]
+  (assoc state :params (->> params
+                            :???)))
+```
 
 
 ### `practice.clj` in step 7
